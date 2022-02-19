@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const getRandomNumber = (firstNumber, secondNumber) => {
   if (secondNumber < firstNumber) {return 0;}
   const min = Math.ceil(firstNumber);
@@ -7,8 +6,8 @@ const getRandomNumber = (firstNumber, secondNumber) => {
 
 };
 
-console.log(getRandomNumber(9, 15));
+getRandomNumber(9, 15);
 
 const checkStrLength = (string, maxLength) => string.length <= maxLength;
 
-console.log(checkStrLength('aaa', 5));
+checkStrLength('aaa', 5);
