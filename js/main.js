@@ -44,7 +44,7 @@ const createPhotoComments = () => ({
   name: getRandomArrayElement(NAME)
 });
 
-const createPhotoDescription = () => ({
+const createPhoto = () => ({
   url: `photos/${ photoId }.jpg`,
   id: photoId++,
   description: getRandomArrayElement(DESCRIPTION),
@@ -52,7 +52,7 @@ const createPhotoDescription = () => ({
   comments: genArrayFromObjects(4, createPhotoComments)
 });
 
-const photos = Array.from({length: MAX_POST_ID}, createPhotoDescription);
+const photos = Array.from({length: MAX_POST_ID}, createPhoto);
 
 
 /*
