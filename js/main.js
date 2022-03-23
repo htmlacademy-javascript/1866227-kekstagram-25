@@ -1,5 +1,5 @@
-import {photos} from './gen-data.js';
+import {addPictures} from './pictures.js';
 
-const photosArray = photos();
+const picturesArray = addPictures();
 
-export {photosArray};
+export {picturesArray};
