@@ -8,6 +8,7 @@ const pictures = document.querySelector('.pictures');
 const picturesTemplate = document.querySelector('#picture').content.querySelector('.picture');
 //Создаем фрагмен для единовременного добавления всех картинок из массива
 const fragment = document.createDocumentFragment();
+
 //Перебираем массив картинок, для каждого лемента создаем клон темплейта и заполняем его данными
 photosArray.forEach((element) => {
   //Создаем клон темплейта и выбираем елементы, в которые будем записывать данные
@@ -15,19 +16,21 @@ photosArray.forEach((element) => {
   const pictureImg = pictureTemplate.querySelector('.picture__img');
   const pictureLikes = pictureTemplate.querySelector('.picture__likes');
   const pictureComments = pictureTemplate.querySelector('.picture__comments');
+
   //Записываем данные в нужные элементы
   pictureImg.src = element.url;
   pictureLikes.textContent = element.likes;
   pictureComments.textContent = element.comments.length;
 
-  pictureTemplate.addEventListener('click', (e) => {
-    e.preventDefault;
+  //Добавляем в элемент callback при клике, по клику будет заполнятся секция больших картинок.
+  pictureTemplate.addEventListener('click', () => {
     showBigPic(element);
   });
 
   fragment.append(pictureTemplate);
 });
 
+//Записываем подготовленный фрагмент элементов в блок pictures, обернул функцией для эекспорта.
 const addPictures = () => pictures.appendChild(fragment);
 
 export {addPictures};
