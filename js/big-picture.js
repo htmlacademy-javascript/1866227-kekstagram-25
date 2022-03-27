@@ -1,15 +1,3 @@
-const testArray = {
-comments: [{id: 1, avatar: 'img/avatar-6.svg', message: 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', name: 'Катя'},
-{id: 2, avatar: 'img/avatar-4.svg', message: 'Лица у людей на фотке перекошены, как будто их изб…. Как можно было поймать такой неудачный момент?!', name: 'Андрей'},
-{id: 3, avatar: 'img/avatar-1.svg', message: 'Всё отлично!', name: 'Маша'},
-{id: 4, avatar: 'img/avatar-1.svg', message: 'Лица у людей на фотке перекошены, как будто их изб…. Как можно было поймать такой неудачный момент?!', name: 'Катя'}],
-description: "Одно из лучших фото",
-id: 1,
-likes: 98,
-url: "photos/1.jpg"
-}
-
-
 const fillBigPicComments = (comments) => {
   //Выбираем блок с комментариями и очищаем содержимое
   const bigPicComments = document.querySelector('.big-picture').querySelector('.social__comments');
@@ -29,7 +17,7 @@ const fillBigPicComments = (comments) => {
   bigPicComments.insertAdjacentHTML('beforeend', commentsList);
 };
 
-const showBigPic = ({url, likes, id, description, comments}) => {
+const showBigPic = ({url, likes, description, comments}) => {
   //Открываем модальное окно
   document.body.classList.add('modal-open');
   const bigPicSection = document.querySelector('.big-picture');
@@ -44,6 +32,7 @@ const showBigPic = ({url, likes, id, description, comments}) => {
   const bigPicLikesCount = bigPicSection.querySelector('.likes-count');
   const bigPicCommentsCount = bigPicSection.querySelector('.comments-count');
   const bigPicCaption = bigPicSection.querySelector('.social__caption');
+  const bigPicBtnCancel = bigPicSection.querySelector('.big-picture__cancel');
 
   //заполняем данным из объекта элементы DOM
   bigPicImg.src = url;
@@ -51,9 +40,24 @@ const showBigPic = ({url, likes, id, description, comments}) => {
   bigPicCommentsCount.textContent = comments.length;
   bigPicCaption.textContent = description;
 
+  //Заполняем блок комментариев из массива
   fillBigPicComments(comments);
+
+  //Добавляем функционал закрытия кона по esc и кнопке выхода
+  bigPicBtnCancel.addEventListener('click', () => {
+    document.body.classList.remove('modal-open');
+    bigPicSection.classList.add('hidden');
+  });
+
+  //Добавляем закрытие окна по esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !bigPicSection.classList.contains('hidden')) {
+      document.body.classList.remove('modal-open');
+      bigPicSection.classList.add('hidden');
+    }
+  });
 };
 
-showBigPic(testArray);
+export {showBigPic};
 
 
