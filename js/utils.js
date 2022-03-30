@@ -8,4 +8,8 @@ const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements
 
 const genArrayFromObjects = (maxCount, fn) => Array.from({length: getRandomNumber(1, maxCount)}, fn);
 
-export {getRandomNumber, getRandomArrayElement, genArrayFromObjects};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const isEnterKey = (evt) => evt.key === 'Enter';
+
+export {getRandomNumber, getRandomArrayElement, genArrayFromObjects, isEscapeKey, isEnterKey};

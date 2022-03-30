@@ -1,5 +1,5 @@
 import {photos} from './gen-data.js';
-import {showBigPic} from './big-picture.js';
+import {openModal} from './modal.js';
 //Получаем массив данных
 const photosArray = photos();
 //Находим секцию с картинками
@@ -9,7 +9,7 @@ const picturesTemplate = document.querySelector('#picture').content.querySelecto
 //Создаем фрагмен для единовременного добавления всех картинок из массива
 const fragment = document.createDocumentFragment();
 
-//Перебираем массив картинок, для каждого лемента создаем клон темплейта и заполняем его данными
+//Перебираем массив картинок, для каждого элемента создаем клон темплейта и заполняем его данными
 photosArray.forEach((element) => {
   //Создаем клон темплейта и выбираем елементы, в которые будем записывать данные
   const pictureTemplate = picturesTemplate.cloneNode(true);
@@ -23,9 +23,7 @@ photosArray.forEach((element) => {
   pictureComments.textContent = element.comments.length;
 
   //Добавляем в элемент callback при клике, по клику будет заполнятся секция больших картинок.
-  pictureTemplate.addEventListener('click', () => {
-    showBigPic(element);
-  });
+  pictureTemplate.addEventListener('click', () => openModal(element));
 
   fragment.append(pictureTemplate);
 });
