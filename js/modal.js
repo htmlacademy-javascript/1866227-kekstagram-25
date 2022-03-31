@@ -11,7 +11,15 @@ const onModalEscKeydown = (evt) => {
   }
 };
 
-const openModal = (element) => {
+function closeModal() {
+  document.body.classList.remove('modal-open');
+  bigPicSection.classList.add('hidden');
+
+  bigPicBtnCancel.removeEventListener('click', closeModal);
+  document.removeEventListener('keydown', onModalEscKeydown);
+}
+
+function openModal(element){
   document.body.classList.add('modal-open');
   bigPicSection.classList.remove('hidden');
 
@@ -19,15 +27,7 @@ const openModal = (element) => {
 
   bigPicBtnCancel.addEventListener('click', closeModal);
   document.addEventListener('keydown', onModalEscKeydown);
-};
-
-const closeModal = () => {
-  document.body.classList.remove('modal-open');
-  bigPicSection.classList.add('hidden');
-
-  bigPicBtnCancel.removeEventListener('click', closeModal);
-  document.removeEventListener('keydown', onModalEscKeydown);
-};
+}
 
 export {openModal};
 
