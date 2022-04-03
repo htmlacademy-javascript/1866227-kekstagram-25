@@ -1,6 +1,20 @@
+import {isEscapeKey, isMouseClick, toggleClass} from './utils.js';
+
+// Выбираем нужные элементы для заполнения данными
+const bigPicSection = document.querySelector('.big-picture');
+const bigPicCloseButton = bigPicSection.querySelector('.big-picture__cancel');
+const bigPicImg = bigPicSection.querySelector('.big-picture__img img');
+const bigPicLikesCount = bigPicSection.querySelector('.likes-count');
+const bigPicCommentsCount = bigPicSection.querySelector('.comments-count');
+const bigPicCaption = bigPicSection.querySelector('.social__caption');
+//Выбираем блок с комментариями и очищаем содержимое
+const bigPicComments = document.querySelector('.big-picture .social__comments');
+
+let shownCommentsCount = 0;
+let totalCommentList = [];
+let totalCommentListLength = 0;
+
 const fillBigPicComments = (comments) => {
-  //Выбираем блок с комментариями и очищаем содержимое
-  const bigPicComments = document.querySelector('.big-picture .social__comments');
   bigPicComments.innerHTML = '';
 
   //Генерим из массива комментариев HTML текс с данными из массива. Применяем метод reduce для конкатинации всех элементов.
@@ -18,18 +32,9 @@ const fillBigPicComments = (comments) => {
 };
 
 const renderBigPic = ({url, likes, description, comments}) => {
-  //Находим секцию с модальным окном
-  const bigPicSection = document.querySelector('.big-picture');
-
   // Скрываем временно ненужные классы
   bigPicSection.querySelector('.social__comment-count').classList.add('hidden');
   bigPicSection.querySelector('.comments-loader').classList.add('hidden');
-
-  // Выбираем нужные элементы для заполнения данными
-  const bigPicImg = bigPicSection.querySelector('.big-picture__img img');
-  const bigPicLikesCount = bigPicSection.querySelector('.likes-count');
-  const bigPicCommentsCount = bigPicSection.querySelector('.comments-count');
-  const bigPicCaption = bigPicSection.querySelector('.social__caption');
 
   //заполняем данным из объекта элементы DOM
   bigPicImg.src = url;
@@ -41,6 +46,34 @@ const renderBigPic = ({url, likes, description, comments}) => {
   fillBigPicComments(comments);
 };
 
-export {renderBigPic};
+const tooglePictureModal = (isHidden) => {
+  toggleClass(bigPicSection, 'hidden', !isHidden);
+  toggleClass(document.body, 'modal-open', isHidden);
+  bigPicComments.innerHTML = '';
+};
+
+const closeBigPicModal = (evt) => {
+  evt.preventDefault();
+  if (isEscapeKey(evt) || isMouseClick(evt)) {
+    tooglePictureModal(false);
+    document.removeEventListener('keydown', closeBigPicModal);
+    bigPicCloseButton.removeEventListener('click', closeBigPicModal);
+    //socialCommentsLoader.removeEventListener('click', loadMoreCommentHandler);
+    //shownCommentsCount = 0;
+    //socialCommentsLoader.classList.remove('hidden');
+  }
+};
+
+const openBigPicModal = (element) => {
+  //socialCommentsLoader.addEventListener('click', loadMoreCommentHandler);
+  //totalCommentList = element.comments;
+  //totalCommentListLength = totalCommentList.length;
+  tooglePictureModal(true);
+  renderBigPic(element);
+  document.addEventListener('keydown', closeBigPicModal);
+  bigPicCloseButton.addEventListener('click', closeBigPicModal);
+};
+
+export {openBigPicModal};
 
 

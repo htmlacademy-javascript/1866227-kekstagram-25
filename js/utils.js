@@ -8,8 +8,27 @@ const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements
 
 const genArrayFromObjects = (maxCount, fn) => Array.from({length: getRandomNumber(1, maxCount)}, fn);
 
-const isEscapeKey = (evt) => evt.key === 'Escape';
+const isMouseClick = (evt) => evt.type === 'click';
+
+const isEscapeKey = (evt) => evt.key === ('Escape' || 'Esc');
 
 const isEnterKey = (evt) => evt.key === 'Enter';
 
-export {getRandomNumber, getRandomArrayElement, genArrayFromObjects, isEscapeKey, isEnterKey};
+const toggleClass = (element, className, isHidden) => element.classList.toggle(className, isHidden);
+
+const stopEscPropagation = ((evt) => {
+  if(isEscapeKey(evt)){
+    evt.stopPropogation();
+  }
+});
+
+export {
+  getRandomNumber,
+  getRandomArrayElement,
+  genArrayFromObjects,
+  isEscapeKey,
+  isEnterKey,
+  isMouseClick,
+  toggleClass,
+  stopEscPropagation
+};
