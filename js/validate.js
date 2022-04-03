@@ -63,13 +63,13 @@ const pristine = new Pristine(pictureUploadForm, {
 });
 
 //Вешаем слушателей методом addValidator на поле Хеш и Описание.
-pristine.addValidator(pictureUploadHashtags, validTagOnlyHash, 'ХешТегов не болжен состоять только из #.');
-pristine.addValidator(pictureUploadHashtags, validTagFromHash, 'ХешТегов должке состоять из # и хотя бы одного символа.');
+pristine.addValidator(pictureUploadHashtags, validTagOnlyHash, 'ХешТег не должен состоять только из #.');
+pristine.addValidator(pictureUploadHashtags, validTagFromHash, 'ХешТег должен состоять из # и хотя бы одного символа.');
 pristine.addValidator(pictureUploadHashtags, validTagsOverflow, `Максимальное кол-во хештегов ${HASHTAGS_MAX_COUNT} штук.`);
 pristine.addValidator(pictureUploadHashtags, validTagsDublicate, 'Все хештеги должны быть уникальными.');
 pristine.addValidator(pictureUploadHashtags, validTagsLengthMinMax, `Длина хештега должна быть больше ${HASHTAGS_MIN_SYMBOLS} и меньше ${HASHTAGS_MAX_SYMBOLS} символов.`);
 pristine.addValidator(pictureUploadHashtags, validTagsRegExp, 'Хештег должен состоять только из букв и цифр');
-pristine.addValidator(pictureUploadDescr, validDescrLength, `Длина описание не должна превышать ${DESCRIPTION_MAX_LENGTH} символов`);
+pristine.addValidator(pictureUploadDescr, validDescrLength, `Длина описания не должна превышать ${DESCRIPTION_MAX_LENGTH} символов`);
 
 //Проверяем что все поля валидны пере отправкой формы.
 pictureUploadForm.addEventListener('submit', (evt) => {
