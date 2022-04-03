@@ -1,5 +1,7 @@
 import {isEscapeKey, isMouseClick, toggleClass} from './utils.js';
 
+const COMMENTS_SHOWEN = 5;
+
 // Выбираем нужные элементы для заполнения данными
 const bigPicSection = document.querySelector('.big-picture');
 const bigPicCloseButton = bigPicSection.querySelector('.big-picture__cancel');
@@ -7,8 +9,10 @@ const bigPicImg = bigPicSection.querySelector('.big-picture__img img');
 const bigPicLikesCount = bigPicSection.querySelector('.likes-count');
 const bigPicCommentsCount = bigPicSection.querySelector('.comments-count');
 const bigPicCaption = bigPicSection.querySelector('.social__caption');
-//Выбираем блок с комментариями и очищаем содержимое
-const bigPicComments = document.querySelector('.big-picture .social__comments');
+const bigPicComments = bigPicSection.querySelector('.social__comments');
+const bigPicCommentsLoader = bigPicSection.querySelector('.social__comments-loader');
+const bigPicShowenCommentsCount = bigPicSection.querySelector('.social__comment-count');
+
 
 let shownCommentsCount = 0;
 let totalCommentList = [];
@@ -20,7 +24,8 @@ const fillBigPicComments = (comments) => {
   //Генерим из массива комментариев HTML текс с данными из массива. Применяем метод reduce для конкатинации всех элементов.
   //, '' - задаем первый эелемент reduce, чтобы аккумулировать все эелементы массива с самого начала.
   const commentsList = comments.reduce((accumulator, currentComment) => {
-    accumulator += `<li class="social__comment">
+    shownCommentsCount++;
+    accumulator += `<li class="social__comment ${shownCommentsCount > COMMENTS_SHOWEN ? 'hidden' : ''}">
       <img class="social__picture" src="${currentComment.avatar}" alt="${currentComment.name}" width="35" height="35">
       <p class="social__text">${currentComment.message}</p>
     </li>`;
@@ -32,18 +37,32 @@ const fillBigPicComments = (comments) => {
 };
 
 const renderBigPic = ({url, likes, description, comments}) => {
-  // Скрываем временно ненужные классы
-  bigPicSection.querySelector('.social__comment-count').classList.add('hidden');
-  bigPicSection.querySelector('.comments-loader').classList.add('hidden');
-
   //заполняем данным из объекта элементы DOM
   bigPicImg.src = url;
   bigPicLikesCount.textContent = likes;
   bigPicCommentsCount.textContent = comments.length;
   bigPicCaption.textContent = description;
 
+
   //Заполняем блок комментариев из массива
   fillBigPicComments(comments);
+  shownCommentsCount = totalCommentListLength < COMMENTS_SHOWEN ? totalCommentListLength : COMMENTS_SHOWEN;
+  fillCommentsCount();
+};
+
+const fillCommentsCount = () => {
+  bigPicShowenCommentsCount.innerHTML = `${shownCommentsCount} из <span class="comments-count">${totalCommentListLength}</span> ${totalCommentListLength == 1 ? 'комментария': 'комментариев'}`
+  if(shownCommentsCount == totalCommentListLength) bigPicCommentsLoader.classList.add('hidden');
+};
+
+const loadMoreCommentHandler = () => {
+  const bigPicComment = bigPicComments.querySelectorAll('.social__comment.hidden');
+  let counter = bigPicComment.length < COMMENTS_SHOWEN ? bigPicComment.length : COMMENTS_SHOWEN;
+  shownCommentsCount += counter;
+  for (let i=0; i < counter; i++) {
+    bigPicComment[i].classList.remove('hidden');
+  };
+  fillCommentsCount();
 };
 
 const tooglePictureModal = (isHidden) => {
@@ -58,16 +77,16 @@ const closeBigPicModal = (evt) => {
     tooglePictureModal(false);
     document.removeEventListener('keydown', closeBigPicModal);
     bigPicCloseButton.removeEventListener('click', closeBigPicModal);
-    //socialCommentsLoader.removeEventListener('click', loadMoreCommentHandler);
-    //shownCommentsCount = 0;
-    //socialCommentsLoader.classList.remove('hidden');
+    bigPicCommentsLoader.removeEventListener('click', loadMoreCommentHandler);
+    shownCommentsCount = 0;
+    bigPicCommentsLoader.classList.remove('hidden');
   }
 };
 
 const openBigPicModal = (element) => {
-  //socialCommentsLoader.addEventListener('click', loadMoreCommentHandler);
-  //totalCommentList = element.comments;
-  //totalCommentListLength = totalCommentList.length;
+  bigPicCommentsLoader.addEventListener('click', loadMoreCommentHandler);
+  totalCommentList = element.comments;
+  totalCommentListLength = totalCommentList.length;
   tooglePictureModal(true);
   renderBigPic(element);
   document.addEventListener('keydown', closeBigPicModal);
