@@ -44,22 +44,24 @@ const renderBigPic = ({url, likes, description, comments}) => {
   bigPicCaption.textContent = description;
 
 
-  //Заполняем блок комментариев из массива
+  //Заполняем блок комментариев из массива, инициализируем счетчик комментариев и вызываем функцию заполнения каунтов комментариев.
   fillBigPicComments(comments);
   shownCommentsCount = totalCommentListLength < COMMENTS_SHOWEN ? totalCommentListLength : COMMENTS_SHOWEN;
   fillCommentsCount();
 };
 
+//Функция после каждого телодвижения заполняет в HTML даныне по количеству отображаемых комментариев и убирает кнопку если уже показали все комментарии.
 const fillCommentsCount = () => {
   bigPicShowenCommentsCount.innerHTML = `${shownCommentsCount} из <span class="comments-count">${totalCommentListLength}</span> ${totalCommentListLength == 1 ? 'комментария': 'комментариев'}`
   if(shownCommentsCount == totalCommentListLength) bigPicCommentsLoader.classList.add('hidden');
 };
 
+//Функция запускается по нажатю на кнопку "Загрузить еще" по событию. Собирает все скерытые комментарии и удаляет класс hidden у 5 штук, или остатки (если остаток меньше 5).
 const loadMoreCommentHandler = () => {
   const bigPicComment = bigPicComments.querySelectorAll('.social__comment.hidden');
-  let counter = bigPicComment.length < COMMENTS_SHOWEN ? bigPicComment.length : COMMENTS_SHOWEN;
-  shownCommentsCount += counter;
-  for (let i=0; i < counter; i++) {
+  let commentsForShowCount = bigPicComment.length < COMMENTS_SHOWEN ? bigPicComment.length : COMMENTS_SHOWEN;
+  shownCommentsCount += commentsForShowCount;
+  for (let i=0; i < commentsForShowCount; i++) {
     bigPicComment[i].classList.remove('hidden');
   };
   fillCommentsCount();
