@@ -28,7 +28,7 @@ const validTagFromHash = ((value) =>
   splitHashtags(value).every((element) => element.startsWith('#'))
 );
 
-// Проверка на превышение количества хэштегов.
+// Проверка на превышение количества хэштегов..
 const validTagsOverflow = ((value) =>
   splitHashtags(value).length <= HASHTAGS_MAX_COUNT
 );
