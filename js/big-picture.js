@@ -36,6 +36,14 @@ const fillBigPicComments = (comments) => {
   bigPicComments.insertAdjacentHTML('beforeend', commentsList);
 };
 
+//Функция после каждого телодвижения заполняет в HTML даныне по количеству отображаемых комментариев и убирает кнопку если уже показали все комментарии.
+const fillCommentsCount = () => {
+  bigPicShowenCommentsCount.innerHTML = `${shownCommentsCount} из <span class="comments-count">${totalCommentListLength}</span> ${totalCommentListLength === 1 ? 'комментария': 'комментариев'}`;
+  if(shownCommentsCount === totalCommentListLength) {
+    bigPicCommentsLoader.classList.add('hidden');
+  }
+};
+
 const renderBigPic = ({url, likes, description, comments}) => {
   //заполняем данным из объекта элементы DOM
   bigPicImg.src = url;
@@ -50,29 +58,25 @@ const renderBigPic = ({url, likes, description, comments}) => {
   fillCommentsCount();
 };
 
-//Функция после каждого телодвижения заполняет в HTML даныне по количеству отображаемых комментариев и убирает кнопку если уже показали все комментарии.
-const fillCommentsCount = () => {
-  bigPicShowenCommentsCount.innerHTML = `${shownCommentsCount} из <span class="comments-count">${totalCommentListLength}</span> ${totalCommentListLength == 1 ? 'комментария': 'комментариев'}`
-  if(shownCommentsCount == totalCommentListLength) bigPicCommentsLoader.classList.add('hidden');
-};
-
 //Функция запускается по нажатю на кнопку "Загрузить еще" по событию. Собирает все скерытые комментарии и удаляет класс hidden у 5 штук, или остатки (если остаток меньше 5).
 const loadMoreCommentHandler = () => {
   const bigPicComment = bigPicComments.querySelectorAll('.social__comment.hidden');
-  let commentsForShowCount = bigPicComment.length < COMMENTS_SHOWEN ? bigPicComment.length : COMMENTS_SHOWEN;
+  const commentsForShowCount = bigPicComment.length < COMMENTS_SHOWEN ? bigPicComment.length : COMMENTS_SHOWEN;
   shownCommentsCount += commentsForShowCount;
   for (let i=0; i < commentsForShowCount; i++) {
     bigPicComment[i].classList.remove('hidden');
-  };
+  }
   fillCommentsCount();
 };
 
+//Переключаем открытие и закрытие окна
 const tooglePictureModal = (isHidden) => {
   toggleClass(bigPicSection, 'hidden', !isHidden);
   toggleClass(document.body, 'modal-open', isHidden);
   bigPicComments.innerHTML = '';
 };
 
+//Все действия, которые нужно сделать при закрытии модального окна
 const closeBigPicModal = (evt) => {
   evt.preventDefault();
   if (isEscapeKey(evt) || isMouseClick(evt)) {
@@ -85,6 +89,7 @@ const closeBigPicModal = (evt) => {
   }
 };
 
+//Все действия, которые нужно сделать при открытии модального окна
 const openBigPicModal = (element) => {
   bigPicCommentsLoader.addEventListener('click', loadMoreCommentHandler);
   totalCommentList = element.comments;

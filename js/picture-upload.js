@@ -1,4 +1,4 @@
-import noUiSlider from '../libs/nouislider.min.mjs';
+//import noUiSlider from '../libs/nouislider.min.mjs';
 import {isEscapeKey, isMouseClick, toggleClass} from './utils.js';
 import  './picture-scale.js';
 import  './validate.js';
@@ -51,7 +51,3 @@ const openPictureUploadModal = (evt) => {
 };
 
 pictureUploadButton.addEventListener('change', openPictureUploadModal);
-
-
-
-

@@ -20,7 +20,7 @@ const splitHashtags = ((HashtagsString) =>
 
 ///Проверка, не состоит ли хэштег только из символа решетки (#).
 const validTagOnlyHash = ((value) =>
-  !(splitHashtags(value).some((element) => (element.charAt(0) == '#' && element.length === 1)))
+  !(splitHashtags(value).some((element) => (element.charAt(0) === '#' && element.length === 1)))
 );
 
 //Проверка, начинается ли хэштег с символа решетки (#).
@@ -73,7 +73,7 @@ pristine.addValidator(pictureUploadDescr, validDescrLength, `Длина опис
 
 //Проверяем что все поля валидны пере отправкой формы.
 pictureUploadForm.addEventListener('submit', (evt) => {
-  if(!pristine.validate()) evt.preventDefault();
+  if(!pristine.validate()) {evt.preventDefault();}
 });
 
 pictureUploadHashtags.addEventListener('keydown', stopEscPropagation);
