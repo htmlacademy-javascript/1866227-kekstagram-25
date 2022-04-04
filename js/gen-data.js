@@ -41,7 +41,7 @@ const createPhoto = () => ({
   id: photoId++,
   description: getRandomArrayElement(DESCRIPTION),
   likes: getRandomNumber(15, 200),
-  comments: genArrayFromObjects(4, createPhotoComments)
+  comments: genArrayFromObjects(15, createPhotoComments)
 });
 
 const photos = () => Array.from({length: MAX_POST_ID}, createPhoto);

@@ -1,8 +1,8 @@
 import {photos} from './gen-data.js';
-import {openModal} from './modal.js';
+import {openBigPicModal} from './big-picture.js';
 //Получаем массив данных
 const photosArray = photos();
-//Находим секцию с картинками
+//Находим секцию с картинками, секуцию с большими картинками и кнопку закрытия окна (для передачит на открытие окна)
 const pictures = document.querySelector('.pictures');
 //Находим темплейт для добавления картинок
 const picturesTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -23,7 +23,9 @@ photosArray.forEach((element) => {
   pictureComments.textContent = element.comments.length;
 
   //Добавляем в элемент callback при клике, по клику будет заполнятся секция больших картинок.
-  pictureTemplate.addEventListener('click', () => openModal(element));
+  pictureTemplate.addEventListener('click', () => {
+    openBigPicModal(element);
+  });
 
   fragment.append(pictureTemplate);
 });
