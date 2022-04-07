@@ -11,7 +11,6 @@ const pictureUploadModal = pictureUploadForm.querySelector('.img-upload__overlay
 const pictureUploadCloseButton = pictureUploadForm.querySelector('#upload-cancel');
 const pictureUploadPreview = pictureUploadForm.querySelector('.img-upload__preview img');
 const scaleControlValue = document.querySelector('.scale__control--value');
-const effectLevelSlider = document.querySelector('.effect-level__slider');
 
 const tooglePictureUploadModal = (isHidden) => {
   toggleClass(pictureUploadModal, 'hidden', !isHidden);

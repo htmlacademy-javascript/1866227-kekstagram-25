@@ -91,7 +91,7 @@ const EFFECT = {
 };
 
 const onSliderChange = () => {
-  let effectId = document.querySelector('.effects__radio:checked').getAttribute('id');
+  const effectId = document.querySelector('.effects__radio:checked').getAttribute('id');
   if (effectId !== 'effect-none') {
     pictureUploadValue.value = slider.noUiSlider.get();
     pictureUploadPreview.style.cssText += `filter: ${EFFECT[effectId].filter}(${slider.noUiSlider.get()}${EFFECT[effectId].unit})`;
@@ -99,7 +99,7 @@ const onSliderChange = () => {
 };
 
 const changeEffect = (evt) => {
-  let effectId = evt.target.getAttribute('id');
+  const effectId = evt.target.getAttribute('id');
   pictureUploadPreview.classList = '';
   pictureUploadPreview.classList.add(`effects__preview--${EFFECT[effectId].name}`);
   slider.classList.add('hidden');
@@ -145,9 +145,3 @@ const removeSlider = () => {
 };
 
 export{createSlider, removeSlider};
-
-
-
-
-
-
