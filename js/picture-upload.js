@@ -1,6 +1,6 @@
-//import noUiSlider from '../libs/nouislider.min.mjs';
 import {isEscapeKey, isMouseClick, toggleClass} from './utils.js';
 import  './picture-scale.js';
+import {createSlider, removeSlider} from './picture-effect.js';
 import  './validate.js';
 import  {pristine} from './validate.js';
 
@@ -11,16 +11,7 @@ const pictureUploadModal = pictureUploadForm.querySelector('.img-upload__overlay
 const pictureUploadCloseButton = pictureUploadForm.querySelector('#upload-cancel');
 const pictureUploadPreview = pictureUploadForm.querySelector('.img-upload__preview img');
 const scaleControlValue = document.querySelector('.scale__control--value');
-const effects = pictureUploadForm.querySelectorAll('.effects__radio');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
-
-//Реализуем изменение класса на Preview для изменения эффекта.
-effects.forEach((element) => {
-  element.addEventListener('click', () => {
-    pictureUploadPreview.className = '';
-    pictureUploadPreview.classList.add(`effects__preview--${element.value}`);
-  });
-});
 
 const tooglePictureUploadModal = (isHidden) => {
   toggleClass(pictureUploadModal, 'hidden', !isHidden);
@@ -37,6 +28,7 @@ const closePictureUploadModal = (evt) => {
     pictureUploadPreview.style = '';
     pictureUploadPreview.classList = '';
     pristine.reset();
+    removeSlider();
   }
 };
 
@@ -47,7 +39,7 @@ const openPictureUploadModal = (evt) => {
   pictureUploadCloseButton.addEventListener('click', closePictureUploadModal);
   scaleControlValue.value = '100%';
   pictureUploadPreview.style.transform = 'scale(1)';
-  effectLevelSlider.classList.add('hidden');
+  createSlider();
 };
 
 pictureUploadButton.addEventListener('change', openPictureUploadModal);
