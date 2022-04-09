@@ -94,7 +94,7 @@ const onSliderChange = () => {
   const effectId = document.querySelector('.effects__radio:checked').getAttribute('id');
   if (effectId !== 'effect-none') {
     pictureUploadValue.value = slider.noUiSlider.get();
-    pictureUploadPreview.style.cssText += `filter: ${EFFECT[effectId].filter}(${slider.noUiSlider.get()}${EFFECT[effectId].unit})`;
+    pictureUploadPreview.style.filter = `${EFFECT[effectId].filter}(${slider.noUiSlider.get()}${EFFECT[effectId].unit})`;
   }
 };
 
