@@ -12,7 +12,6 @@ const pictureUploadForm = document.querySelector('.img-upload__form');
 const pictureUploadHashtags = pictureUploadForm.querySelector('.text__hashtags');
 const pictureUploadDescr = pictureUploadForm.querySelector('.text__description');
 
-
 //Разбиваем массив на отдельные элементы
 const splitHashtags = ((HashtagsString) =>
   HashtagsString.trim().toLowerCase().split(' ').filter((element) => element !== '')
@@ -52,6 +51,18 @@ const validDescrLength = ((value) =>
   value.length <= DESCRIPTION_MAX_LENGTH
 );
 
+//Создаем единую функцию для валидации хещтега
+const validateHash = (value) => {
+  let errorMessage = [];
+  if(!validTagOnlyHash(value))  errorMessage.push('ХешТег не должен состоять только из #.');
+  if(!validTagFromHash(value))  errorMessage.push('ХешТег должен состоять из # и хотя бы одного символа.');
+  if(!validTagsOverflow(value))  errorMessage.push(`Максимальное кол-во хештегов ${HASHTAGS_MAX_COUNT} штук.`);
+  if(!validTagsDublicate(value))  errorMessage.push('Все хештеги должны быть уникальными.');
+  if(!validTagsLengthMinMax(value))  errorMessage.push(`Длина хештега должна быть больше ${HASHTAGS_MIN_SYMBOLS} и меньше ${HASHTAGS_MAX_SYMBOLS} символов.`);
+  if(!validTagsRegExp(value))  errorMessage.push('Хештег должен состоять только из букв и цифр');
+  return errorMessage
+};
+
 //Создаем объект Pristine при помощи библиотеки и описываем как должен добавляться класс с ошибками.
 const pristine = new Pristine(pictureUploadForm, {
   classTo: 'text__label',
@@ -63,12 +74,7 @@ const pristine = new Pristine(pictureUploadForm, {
 });
 
 //Вешаем слушателей методом addValidator на поле Хеш и Описание.
-pristine.addValidator(pictureUploadHashtags, validTagOnlyHash, 'ХешТег не должен состоять только из #.');
-pristine.addValidator(pictureUploadHashtags, validTagFromHash, 'ХешТег должен состоять из # и хотя бы одного символа.');
-pristine.addValidator(pictureUploadHashtags, validTagsOverflow, `Максимальное кол-во хештегов ${HASHTAGS_MAX_COUNT} штук.`);
-pristine.addValidator(pictureUploadHashtags, validTagsDublicate, 'Все хештеги должны быть уникальными.');
-pristine.addValidator(pictureUploadHashtags, validTagsLengthMinMax, `Длина хештега должна быть больше ${HASHTAGS_MIN_SYMBOLS} и меньше ${HASHTAGS_MAX_SYMBOLS} символов.`);
-pristine.addValidator(pictureUploadHashtags, validTagsRegExp, 'Хештег должен состоять только из букв и цифр');
+pristine.addValidator(pictureUploadHashtags, (value) => (validateHash(value).length===0), (value) => (validateHash(value)[0]));
 pristine.addValidator(pictureUploadDescr, validDescrLength, `Длина описания не должна превышать ${DESCRIPTION_MAX_LENGTH} символов`);
 
 //Проверяем что все поля валидны пере отправкой формы.
