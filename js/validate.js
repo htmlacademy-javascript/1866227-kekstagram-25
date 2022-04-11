@@ -1,4 +1,7 @@
 import {stopEscPropagation} from './utils.js';
+import {closePictureUploadModal} from './picture-upload.js';
+import {createPostLoader} from  './data-loader.js';
+import {onSubmitOpenValid} from  './post-validate.js';
 
 //Объявлем переменные
 const HASHTAGS_MAX_COUNT = 5;
@@ -6,11 +9,13 @@ const HASHTAGS_MIN_SYMBOLS = 2;
 const HASHTAGS_MAX_SYMBOLS = 20;
 const HASHTAGS_REGEX = /^#[A-Za-zА-Яа-яЕё0-9]{1,19}$/;
 const DESCRIPTION_MAX_LENGTH = 140;
+const URL_POST = 'https://25.javascript.pages.academy/kekstagram';
 
 //Выбираем форму, а в ней поле ввода хештегов и описания
 const pictureUploadForm = document.querySelector('.img-upload__form');
 const pictureUploadHashtags = pictureUploadForm.querySelector('.text__hashtags');
 const pictureUploadDescr = pictureUploadForm.querySelector('.text__description');
+const pictureUploadSubmitBtn = pictureUploadForm.querySelector('.img-upload__submit');
 
 //Разбиваем массив на отдельные элементы
 const splitHashtags = ((HashtagsString) =>
@@ -78,8 +83,36 @@ pristine.addValidator(pictureUploadHashtags, (value) => (validateHash(value).len
 pristine.addValidator(pictureUploadDescr, validDescrLength, `Длина описания не должна превышать ${DESCRIPTION_MAX_LENGTH} символов`);
 
 //Проверяем что все поля валидны пере отправкой формы.
+
+const onSubmitLockBtn = (element) => {
+  element.disable = true;
+  element.textContent = 'Загружаю...'
+};
+const onSubmitUnlockBtn = (element) => {
+  element.disable = false;
+  element.textContent = 'Опубликовать'
+};
+
 pictureUploadForm.addEventListener('submit', (evt) => {
-  if(!pristine.validate()) {evt.preventDefault();}
+  evt.preventDefault();
+
+  if(pristine.validate()) {
+    onSubmitLockBtn(pictureUploadSubmitBtn);
+    createPostLoader(
+      URL_POST,
+      () => {
+        closePictureUploadModal(evt);
+        onSubmitUnlockBtn(pictureUploadSubmitBtn);
+        onSubmitOpenValid('success');
+      },
+      () => {
+        closePictureUploadModal(evt);
+        onSubmitUnlockBtn(pictureUploadSubmitBtn);
+        onSubmitOpenValid('error');
+      },
+      new FormData(evt.target)
+    );
+  }
 });
 
 pictureUploadHashtags.addEventListener('keydown', stopEscPropagation);
