@@ -709,7 +709,20 @@ main {
 
   border-radius: 5px;
 }
+.text__label {
+  position: relative;
+}
 
+.text__error {
+  position: absolute;
+  top: 26px;
+  left: 0;
+  right: 0;
+
+  font-size: 10px;
+
+  background-color: #e90000;
+}
 
 /**
  * Кнопка для отправки изображения
