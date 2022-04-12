@@ -58,14 +58,14 @@ const validDescrLength = ((value) =>
 
 //Создаем единую функцию для валидации хещтега
 const validateHash = (value) => {
-  let errorMessage = [];
-  if(!validTagOnlyHash(value))  errorMessage.push('ХешТег не должен состоять только из #.');
-  if(!validTagFromHash(value))  errorMessage.push('ХешТег должен состоять из # и хотя бы одного символа.');
-  if(!validTagsOverflow(value))  errorMessage.push(`Максимальное кол-во хештегов ${HASHTAGS_MAX_COUNT} штук.`);
-  if(!validTagsDublicate(value))  errorMessage.push('Все хештеги должны быть уникальными.');
-  if(!validTagsLengthMinMax(value))  errorMessage.push(`Длина хештега должна быть больше ${HASHTAGS_MIN_SYMBOLS} и меньше ${HASHTAGS_MAX_SYMBOLS} символов.`);
-  if(!validTagsRegExp(value))  errorMessage.push('Хештег должен состоять только из букв и цифр');
-  return errorMessage
+  const errorMessage = [];
+  if(!validTagOnlyHash(value))  {errorMessage.push('ХешТег не должен состоять только из #.');}
+  if(!validTagFromHash(value))  {errorMessage.push('ХешТег должен состоять из # и хотя бы одного символа.');}
+  if(!validTagsOverflow(value))  {errorMessage.push(`Максимальное кол-во хештегов ${HASHTAGS_MAX_COUNT} штук.`);}
+  if(!validTagsDublicate(value))  {errorMessage.push('Все хештеги должны быть уникальными.');}
+  if(!validTagsLengthMinMax(value))  {errorMessage.push(`Длина хештега должна быть больше ${HASHTAGS_MIN_SYMBOLS} и меньше ${HASHTAGS_MAX_SYMBOLS} символов.`);}
+  if(!validTagsRegExp(value))  {errorMessage.push('Хештег должен состоять только из букв и цифр');}
+  return errorMessage;
 };
 
 //Создаем объект Pristine при помощи библиотеки и описываем как должен добавляться класс с ошибками.
@@ -86,11 +86,11 @@ pristine.addValidator(pictureUploadDescr, validDescrLength, `Длина опис
 
 const onSubmitLockBtn = (element) => {
   element.disable = true;
-  element.textContent = 'Загружаю...'
+  element.textContent = 'Загружаю...';
 };
 const onSubmitUnlockBtn = (element) => {
   element.disable = false;
-  element.textContent = 'Опубликовать'
+  element.textContent = 'Опубликовать';
 };
 
 pictureUploadForm.addEventListener('submit', (evt) => {

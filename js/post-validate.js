@@ -19,7 +19,7 @@ const onSubmitOpenValid = (type) => {
   elementCloseButton.addEventListener('click', onSubmitCloseValid);
   elementInner.addEventListener('click', (evt) => {
     evt.stopPropagation();
-  })
+  });
   element.addEventListener('click', onSubmitCloseValid);
 };
 
