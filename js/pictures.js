@@ -4,7 +4,7 @@ const addPictures = (photosArray) => {
 
   //Находим секцию с картинками, секуцию с большими картинками и все равнее добавленные картинки
   const pictures = document.querySelector('.pictures');
-  const picturesElement = document.querySelectorAll('.pictures .picture');
+  const picturesElement = pictures.querySelectorAll('.picture');
   //Удаляем ранее загруженные картинки
   picturesElement.forEach((element) => element.remove());
   //Находим темплейт для добавления картинок
