@@ -76,6 +76,7 @@ const tooglePictureModal = (isHidden) => {
   bigPicCommentsElement.innerHTML = '';
 };
 
+
 //Все действия, которые нужно сделать при закрытии модального окна
 const closeBigPicModal = (evt) => {
   evt.preventDefault();
