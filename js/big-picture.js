@@ -13,7 +13,6 @@ const bigPicCommentsElement = bigPicElement.querySelector('.social__comments');
 const bigPicCommentsLoaderElement = bigPicElement.querySelector('.social__comments-loader');
 const bigPicShowenCommentsCountElement = bigPicElement.querySelector('.social__comment-count');
 
-
 let shownCommentsCount = 0;
 let totalCommentList = [];
 let totalCommentListLength = 0;
