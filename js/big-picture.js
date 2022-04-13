@@ -1,4 +1,4 @@
-import {isEscapeKey, isMouseClick, toggleClass} from './utils.js';
+import {checkIsEscapeKey, checkIsMouseClick, toggleClass} from './utils.js';
 
 const COMMENTS_SHOWEN = 5;
 
@@ -79,7 +79,7 @@ const tooglePictureModal = (isHidden) => {
 //Все действия, которые нужно сделать при закрытии модального окна
 const closeBigPicModal = (evt) => {
   evt.preventDefault();
-  if (isEscapeKey(evt) || isMouseClick(evt)) {
+  if (checkIsEscapeKey(evt) || checkIsMouseClick(evt)) {
     tooglePictureModal(false);
     document.removeEventListener('keydown', closeBigPicModal);
     bigPicCloseButton.removeEventListener('click', closeBigPicModal);

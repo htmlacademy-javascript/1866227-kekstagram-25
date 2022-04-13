@@ -1,4 +1,4 @@
-import {isEscapeKey, isMouseClick, isFormSubmit, toggleClass} from './utils.js';
+import {checkIsEscapeKey, checkIsMouseClick, checkIsFormSubmit, toggleClass} from './utils.js';
 import  './picture-scale.js';
 import {createSlider, removeSlider} from './picture-effect.js';
 import  './validate.js';
@@ -18,7 +18,7 @@ const tooglePictureUploadModal = (isHidden) => {
 };
 
 const closePictureUploadModal = (evt) => {
-  if (isEscapeKey(evt) || isMouseClick(evt) || isFormSubmit(evt)) {
+  if (checkIsEscapeKey(evt) || checkIsMouseClick(evt) || checkIsFormSubmit(evt)) {
     tooglePictureUploadModal(false);
     document.removeEventListener('keydown', closePictureUploadModal);
     pictureUploadCloseButton.removeEventListener('click', closePictureUploadModal);

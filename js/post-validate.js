@@ -1,7 +1,7 @@
-import {isEscapeKey, isMouseClick} from './utils.js';
+import {checkIsEscapeKey, checkIsMouseClick} from './utils.js';
 
 const onSubmitCloseValid = (evt) => {
-  if (isEscapeKey(evt) || isMouseClick(evt)) {
+  if (checkIsEscapeKey(evt) || checkIsMouseClick(evt)) {
     evt.stopPropagation();
     document.body.lastElementChild.remove();
   }
