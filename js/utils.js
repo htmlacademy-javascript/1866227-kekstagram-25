@@ -10,18 +10,18 @@ const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements
 
 const genArrayFromObjects = (maxCount, fn) => Array.from({length: getRandomNumber(1, maxCount)}, fn);
 
-const isMouseClick = (evt) => evt.type === 'click';
+const checkIsMouseClick = (evt) => evt.type === 'click';
 
-const isFormSubmit = (evt) => evt.type === 'submit';
+const checkIsFormSubmit = (evt) => evt.type === 'submit';
 
-const isEscapeKey = (evt) => evt.key === ('Escape' || 'Esc');
+const checkIsEscapeKey = (evt) => evt.key === ('Escape' || 'Esc');
 
-const isEnterKey = (evt) => evt.key === 'Enter';
+const checkIsEnterKey = (evt) => evt.key === 'Enter';
 
 const toggleClass = (element, className, isHidden) => element.classList.toggle(className, isHidden);
 
 const stopEscPropagation = ((evt) => {
-  if(isEscapeKey(evt)){
+  if(checkIsEscapeKey(evt)){
     evt.stopPropogation();
   }
 });
@@ -47,15 +47,24 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
 export {
   getRandomNumber,
   getRandomArrayElement,
   genArrayFromObjects,
-  isEscapeKey,
-  isEnterKey,
-  isMouseClick,
-  isFormSubmit,
+  checkIsEscapeKey,
+  checkIsEnterKey,
+  checkIsMouseClick,
+  checkIsFormSubmit,
   toggleClass,
   stopEscPropagation,
-  showAlert
+  showAlert,
+  debounce
 };
