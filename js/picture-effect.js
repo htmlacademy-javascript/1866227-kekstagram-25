@@ -1,7 +1,7 @@
-const slider = document.querySelector('.effect-level__slider');
-const effects = document.querySelectorAll('.effects__radio');
-const pictureUploadPreview = document.querySelector('.img-upload__preview img');
-const pictureUploadValue = document.querySelector('.effect-level__value');
+const sliderElement = document.querySelector('.effect-level__slider');
+const effectsElement = document.querySelectorAll('.effects__radio');
+const pictureUploadPreviewElement = document.querySelector('.img-upload__preview img');
+const pictureUploadValueElement = document.querySelector('.effect-level__value');
 
 const EFFECT = {
   'effect-none': {
@@ -93,26 +93,26 @@ const EFFECT = {
 const onSliderChange = () => {
   const effectId = document.querySelector('.effects__radio:checked').getAttribute('id');
   if (effectId !== 'effect-none') {
-    pictureUploadValue.value = slider.noUiSlider.get();
-    pictureUploadPreview.style.filter = `${EFFECT[effectId].filter}(${slider.noUiSlider.get()}${EFFECT[effectId].unit})`;
+    pictureUploadValueElement.value = sliderElement.noUiSlider.get();
+    pictureUploadPreviewElement.style.filter = `${EFFECT[effectId].filter}(${sliderElement.noUiSlider.get()}${EFFECT[effectId].unit})`;
   }
 };
 
 const changeEffect = (evt) => {
   const effectId = evt.target.getAttribute('id');
-  pictureUploadPreview.classList = '';
-  pictureUploadPreview.classList.add(`effects__preview--${EFFECT[effectId].name}`);
-  slider.classList.add('hidden');
-  pictureUploadPreview.style.filter = '';
+  pictureUploadPreviewElement.classList = '';
+  pictureUploadPreviewElement.classList.add(`effects__preview--${EFFECT[effectId].name}`);
+  sliderElement.classList.add('hidden');
+  pictureUploadPreviewElement.style.filter = '';
 
   if(effectId !== 'effect-none') {
-    slider.classList.remove('hidden');
-    slider.noUiSlider.updateOptions(EFFECT[effectId].nouisilder);
+    sliderElement.classList.remove('hidden');
+    sliderElement.noUiSlider.updateOptions(EFFECT[effectId].nouisilder);
   }
 };
 
 const createSlider = () => {
-  noUiSlider.create(slider, {
+  noUiSlider.create(sliderElement, {
     range: {
       min: 0,
       max: 100,
@@ -133,15 +133,15 @@ const createSlider = () => {
     },
   });
 
-  effects.forEach((element) => element.addEventListener('change', changeEffect));
-  slider.noUiSlider.on('update', onSliderChange);
-  slider.classList.add('hidden');
+  effectsElement.forEach((element) => element.addEventListener('change', changeEffect));
+  sliderElement.noUiSlider.on('update', onSliderChange);
+  sliderElement.classList.add('hidden');
 
 };
 
 const removeSlider = () => {
-  slider.noUiSlider.destroy();
-  effects.forEach((element) => element.removeEventListener('change', changeEffect));
+  sliderElement.noUiSlider.destroy();
+  effectsElement.forEach((element) => element.removeEventListener('change', changeEffect));
 };
 
 export{createSlider, removeSlider};

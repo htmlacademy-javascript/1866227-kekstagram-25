@@ -1,8 +1,8 @@
 import {addPictures} from './pictures.js';
 
-const filterContainer = document.querySelector('.img-filters');
-const filterForm = document.querySelector('.img-filters__form');
-const filterFormButtons = document.querySelectorAll('.img-filters__button');
+const filterElement = document.querySelector('.img-filters');
+const filterFormElement = document.querySelector('.img-filters__form');
+const filterFormButtonsElement = document.querySelectorAll('.img-filters__button');
 
 const getRandomData = (data) => data.slice().sort(() => Math.random() - 0.5).slice(0,10);
 
@@ -20,10 +20,10 @@ const setFilter = (data, evt) => {
 };
 
 const createFilter = (data, cb) => {
-  filterContainer.classList.remove('img-filters--inactive');
+  filterElement.classList.remove('img-filters--inactive');
 
-  filterForm.addEventListener('click', (evt) => {
-    filterFormButtons.forEach((element) => {
+  filterFormElement.addEventListener('click', (evt) => {
+    filterFormButtonsElement.forEach((element) => {
       if (element.id === evt.target.id) {
         element.classList.add('img-filters__button--active');
       } else {

@@ -7,36 +7,36 @@ import  {pristine} from './validate.js';
 const PICTURE_TYPES = ['jpeg', 'png', 'gif', 'jpg'];
 
 //Определяем необходимые элементы
-const pictureUploadForm = document.querySelector('.img-upload__form');
-const pictureUploadButton = pictureUploadForm.querySelector('.img-upload__start input[type=file]');
-const pictureUploadModal = pictureUploadForm.querySelector('.img-upload__overlay');
-const pictureUploadCloseButton = pictureUploadForm.querySelector('#upload-cancel');
-const pictureUploadPreview = pictureUploadForm.querySelector('.img-upload__preview img');
-const scaleControlValue = document.querySelector('.scale__control--value');
+const pictureUploadFormElement = document.querySelector('.img-upload__form');
+const pictureUploadButtonElement = pictureUploadFormElement.querySelector('.img-upload__start input[type=file]');
+const pictureUploadModalElement = pictureUploadFormElement.querySelector('.img-upload__overlay');
+const pictureUploadCloseButtonElement = pictureUploadFormElement.querySelector('#upload-cancel');
+const pictureUploadPreviewElement = pictureUploadFormElement.querySelector('.img-upload__preview img');
+const scaleControlValueElement = document.querySelector('.scale__control--value');
 
 const uploadPhoto = (evt) => {
   const file = evt.target.files[0];
   const fileName = file.name;
   if (PICTURE_TYPES.includes(fileName)) {
-    pictureUploadPreview.src = URL.createObjectURL(file);
+    pictureUploadPreviewElement.src = URL.createObjectURL(file);
   }
 };
 
 const tooglePictureUploadModal = (isHidden) => {
-  toggleClass(pictureUploadModal, 'hidden', !isHidden);
+  toggleClass(pictureUploadModalElement, 'hidden', !isHidden);
   toggleClass(document.body, 'modal-open', isHidden);
 };
 
 const closePictureUploadModal = (evt) => {
   if (checkIsEscapeKey(evt) || checkIsMouseClick(evt) || checkIsFormSubmit(evt)) {
     document.removeEventListener('keydown', closePictureUploadModal);
-    pictureUploadCloseButton.removeEventListener('click', closePictureUploadModal);
+    pictureUploadCloseButtonElement.removeEventListener('click', closePictureUploadModal);
 
     tooglePictureUploadModal(false);
-    pictureUploadForm.reset();
-    pictureUploadButton.value = '';
-    pictureUploadPreview.style = '';
-    pictureUploadPreview.classList = '';
+    pictureUploadFormElement.reset();
+    pictureUploadButtonElement.value = '';
+    pictureUploadPreviewElement.style = '';
+    pictureUploadPreviewElement.classList = '';
     pristine.reset();
     removeSlider();
   }
@@ -44,16 +44,16 @@ const closePictureUploadModal = (evt) => {
 
 const openPictureUploadModal = (evt) => {
   document.addEventListener('keydown', closePictureUploadModal);
-  pictureUploadCloseButton.addEventListener('click', closePictureUploadModal);
+  pictureUploadCloseButtonElement.addEventListener('click', closePictureUploadModal);
 
   uploadPhoto(evt);
   tooglePictureUploadModal(true);
-  scaleControlValue.value = '100%';
-  pictureUploadPreview.style.transform = 'scale(1)';
+  scaleControlValueElement.value = '100%';
+  pictureUploadPreviewElement.style.transform = 'scale(1)';
   createSlider();
 };
 
-pictureUploadButton.addEventListener('change', openPictureUploadModal);
+pictureUploadButtonElement.addEventListener('change', openPictureUploadModal);
 
 export {closePictureUploadModal};
 

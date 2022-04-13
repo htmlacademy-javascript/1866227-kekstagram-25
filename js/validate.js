@@ -12,10 +12,10 @@ const DESCRIPTION_MAX_LENGTH = 140;
 const URL_POST = 'https://25.javascript.pages.academy/kekstagram';
 
 //Выбираем форму, а в ней поле ввода хештегов и описания
-const pictureUploadForm = document.querySelector('.img-upload__form');
-const pictureUploadHashtags = pictureUploadForm.querySelector('.text__hashtags');
-const pictureUploadDescr = pictureUploadForm.querySelector('.text__description');
-const pictureUploadSubmitBtn = pictureUploadForm.querySelector('.img-upload__submit');
+const pictureUploadFormElement = document.querySelector('.img-upload__form');
+const pictureUploadHashtagsElement = pictureUploadFormElement.querySelector('.text__hashtags');
+const pictureUploadDescrElement = pictureUploadFormElement.querySelector('.text__description');
+const pictureUploadSubmitBtnElement = pictureUploadFormElement.querySelector('.img-upload__submit');
 
 //Разбиваем массив на отдельные элементы
 const splitHashtags = ((HashtagsString) =>
@@ -69,7 +69,7 @@ const validateHash = (value) => {
 };
 
 //Создаем объект Pristine при помощи библиотеки и описываем как должен добавляться класс с ошибками.
-const pristine = new Pristine(pictureUploadForm, {
+const pristine = new Pristine(pictureUploadFormElement, {
   classTo: 'text__label',
   errorClass: 'text__label--invalid',
   successClass: 'text__label--valid',
@@ -79,8 +79,8 @@ const pristine = new Pristine(pictureUploadForm, {
 });
 
 //Вешаем слушателей методом addValidator на поле Хеш и Описание.
-pristine.addValidator(pictureUploadHashtags, (value) => (validateHash(value).length===0), (value) => (validateHash(value)[0]));
-pristine.addValidator(pictureUploadDescr, validDescrLength, `Длина описания не должна превышать ${DESCRIPTION_MAX_LENGTH} символов`);
+pristine.addValidator(pictureUploadHashtagsElement, (value) => (validateHash(value).length===0), (value) => (validateHash(value)[0]));
+pristine.addValidator(pictureUploadDescrElement, validDescrLength, `Длина описания не должна превышать ${DESCRIPTION_MAX_LENGTH} символов`);
 
 //Проверяем что все поля валидны пере отправкой формы.
 
@@ -93,21 +93,21 @@ const onSubmitUnlockBtn = (element) => {
   element.textContent = 'Опубликовать';
 };
 
-pictureUploadForm.addEventListener('submit', (evt) => {
+pictureUploadFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   if(pristine.validate()) {
-    onSubmitLockBtn(pictureUploadSubmitBtn);
+    onSubmitLockBtn(pictureUploadSubmitBtnElement);
     createPostLoader(
       URL_POST,
       () => {
         closePictureUploadModal(evt);
-        onSubmitUnlockBtn(pictureUploadSubmitBtn);
+        onSubmitUnlockBtn(pictureUploadSubmitBtnElement);
         onSubmitOpenValid('success');
       },
       () => {
         closePictureUploadModal(evt);
-        onSubmitUnlockBtn(pictureUploadSubmitBtn);
+        onSubmitUnlockBtn(pictureUploadSubmitBtnElement);
         onSubmitOpenValid('error');
       },
       new FormData(evt.target)
@@ -115,8 +115,8 @@ pictureUploadForm.addEventListener('submit', (evt) => {
   }
 });
 
-pictureUploadHashtags.addEventListener('keydown', stopEscPropagation);
-pictureUploadDescr.addEventListener('keydown', stopEscPropagation);
+pictureUploadHashtagsElement.addEventListener('keydown', stopEscPropagation);
+pictureUploadDescrElement.addEventListener('keydown', stopEscPropagation);
 
 //Экспортируем объект для обнуления при открытии окна формы.
 export {pristine};
