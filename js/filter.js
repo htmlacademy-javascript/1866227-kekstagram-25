@@ -1,25 +1,35 @@
 import {addPictures} from './pictures.js';
+import {debounce} from './utils.js';
+
+const RERENDER_DELAY = 500;
 
 const filterElement = document.querySelector('.img-filters');
 const filterFormElement = document.querySelector('.img-filters__form');
 const filterFormButtonsElement = document.querySelectorAll('.img-filters__button');
 
-const shufflePhotos = (data) => data.slice().sort(() => Math.random() - 0.5).slice(0,10);
+const shufflePhotos = (datas) => datas.slice().sort(() => Math.random() - 0.5).slice(0,10);
 
-const sortPhotosByComments = (data) => data.slice().sort((a, b) => b.comments.length - a.likes.comments.length);
+const sortPhotosByComments = (datas) => datas.slice().sort((a, b) => b.comments.length - a.comments.length);
 
-const setFilter = (data, evt) => {
-  let newData = data;
+const setFilter = (datas, evt) => {
+  let newDatas = datas;
   if (evt.target.id === 'filter-random') {
-    newData = shufflePhotos(data);
+    newDatas = shufflePhotos(datas);
   }
   if (evt.target.id === 'filter-discussed') {
-    newData = sortPhotosByComments(data);
+    newDatas = sortPhotosByComments(datas);
   }
-  addPictures(newData);
+  addPictures(newDatas);
 };
 
-const createFilter = (data, cb) => {
+const getDebounceCb = debounce(
+  (d, e) => {
+    setFilter(d, e);
+  },
+  RERENDER_DELAY
+);
+
+const createFilter = (datas) => {
   filterElement.classList.remove('img-filters--inactive');
 
   filterFormElement.addEventListener('click', (evt) => {
@@ -30,8 +40,8 @@ const createFilter = (data, cb) => {
         element.classList.remove('img-filters__button--active');
       }
     });
-    cb(data, evt);
+    getDebounceCb(datas, evt);
   });
 };
 
-export {createFilter, setFilter};
+export {createFilter};

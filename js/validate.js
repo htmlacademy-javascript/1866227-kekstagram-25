@@ -1,7 +1,7 @@
-import {stopEscPropagation} from './utils.js';
 import {closePictureUploadModal} from './picture-upload.js';
 import {createPostLoader} from  './data-loader.js';
-import {onSubmitOpenValid} from  './post-validate.js';
+import {openValidModal} from  './post-validate.js';
+import {checkIsFormSubmit} from './utils.js';
 
 //Объявлем переменные
 const HASHTAGS_MAX_COUNT = 5;
@@ -58,14 +58,14 @@ const validDescrLength = ((value) =>
 
 //Создаем единую функцию для валидации хещтега
 const validateHash = (value) => {
-  const errorMessage = [];
-  if(!validTagOnlyHash(value))  {errorMessage.push('ХешТег не должен состоять только из #.');}
-  if(!validTagFromHash(value))  {errorMessage.push('ХешТег должен состоять из # и хотя бы одного символа.');}
-  if(!validTagsOverflow(value))  {errorMessage.push(`Максимальное кол-во хештегов ${HASHTAGS_MAX_COUNT} штук.`);}
-  if(!validTagsDublicate(value))  {errorMessage.push('Все хештеги должны быть уникальными.');}
-  if(!validTagsLengthMinMax(value))  {errorMessage.push(`Длина хештега должна быть больше ${HASHTAGS_MIN_SYMBOLS} и меньше ${HASHTAGS_MAX_SYMBOLS} символов.`);}
-  if(!validTagsRegExp(value))  {errorMessage.push('Хештег должен состоять только из букв и цифр');}
-  return errorMessage;
+  const errorMessages = [];
+  if(!validTagOnlyHash(value))  {errorMessages.push('ХешТег не должен состоять только из #.');}
+  if(!validTagFromHash(value))  {errorMessages.push('ХешТег должен состоять из # и хотя бы одного символа.');}
+  if(!validTagsOverflow(value))  {errorMessages.push(`Максимальное кол-во хештегов ${HASHTAGS_MAX_COUNT} штук.`);}
+  if(!validTagsDublicate(value))  {errorMessages.push('Все хештеги должны быть уникальными.');}
+  if(!validTagsLengthMinMax(value))  {errorMessages.push(`Длина хештега должна быть больше ${HASHTAGS_MIN_SYMBOLS} и меньше ${HASHTAGS_MAX_SYMBOLS} символов.`);}
+  if(!validTagsRegExp(value))  {errorMessages.push('Хештег должен состоять только из букв и цифр');}
+  return errorMessages;
 };
 
 //Создаем объект Pristine при помощи библиотеки и описываем как должен добавляться класс с ошибками.
@@ -84,39 +84,38 @@ pristine.addValidator(pictureUploadDescrElement, validDescrLength, `Длина �
 
 //Проверяем что все поля валидны пере отправкой формы.
 
-const onSubmitLockBtn = (element) => {
+const lockSubmitButton = (element) => {
   element.disable = true;
   element.textContent = 'Загружаю...';
 };
-const onSubmitUnlockBtn = (element) => {
+const unlockSubmitButton = (element) => {
   element.disable = false;
   element.textContent = 'Опубликовать';
 };
 
-pictureUploadFormElement.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+const onSubmitButtonClick = (evt) => {
+  if(checkIsFormSubmit(evt)) {
+    evt.preventDefault();
 
-  if(pristine.validate()) {
-    onSubmitLockBtn(pictureUploadSubmitBtnElement);
-    createPostLoader(
-      URL_POST,
-      () => {
-        closePictureUploadModal(evt);
-        onSubmitUnlockBtn(pictureUploadSubmitBtnElement);
-        onSubmitOpenValid('success');
-      },
-      () => {
-        closePictureUploadModal(evt);
-        onSubmitUnlockBtn(pictureUploadSubmitBtnElement);
-        onSubmitOpenValid('error');
-      },
-      new FormData(evt.target)
-    );
+    if(pristine.validate()) {
+      lockSubmitButton(pictureUploadSubmitBtnElement);
+      createPostLoader(
+        URL_POST,
+        () => {
+          closePictureUploadModal(evt);
+          unlockSubmitButton(pictureUploadSubmitBtnElement);
+          openValidModal('success');
+        },
+        () => {
+          closePictureUploadModal(evt);
+          unlockSubmitButton(pictureUploadSubmitBtnElement);
+          openValidModal('error');
+        },
+        new FormData(evt.target)
+      );
+    }
   }
-});
-
-pictureUploadHashtagsElement.addEventListener('keydown', stopEscPropagation);
-pictureUploadDescrElement.addEventListener('keydown', stopEscPropagation);
+};
 
 //Экспортируем объект для обнуления при открытии окна формы.
-export {pristine};
+export {pristine, onSubmitButtonClick};

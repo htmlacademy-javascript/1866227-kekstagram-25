@@ -19,8 +19,8 @@ const createGetLoader = async (url, onSuccess, onError) => {
       }
       throw new Error(`${response.status} ${response.statusText}`);
     })
-    .then((data) => {
-      onSuccess(data);
+    .then((datas) => {
+      onSuccess(datas);
     })
     .catch((error) => {
       onError(error.message);
