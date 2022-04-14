@@ -59,11 +59,11 @@ const renderBigPic = ({url, likes, description, comments}) => {
 
 //Функция запускается по нажатю на кнопку "Загрузить еще" по событию. Собирает все скерытые комментарии и удаляет класс hidden у 5 штук, или остатки (если остаток меньше 5).
 const loadMoreComments = () => {
-  const bigPicComment = bigPicCommentsElement.querySelectorAll('.social__comment.hidden');
-  const commentsForShowCount = bigPicComment.length < COMMENTS_SHOWEN ? bigPicComment.length : COMMENTS_SHOWEN;
+  const bigPicComments = bigPicCommentsElement.querySelectorAll('.social__comment.hidden');
+  const commentsForShowCount = bigPicComments.length < COMMENTS_SHOWEN ? bigPicComments.length : COMMENTS_SHOWEN;
   shownCommentsCount += commentsForShowCount;
   for (let i=0; i < commentsForShowCount; i++) {
-    bigPicComment[i].classList.remove('hidden');
+    bigPicComments[i].classList.remove('hidden');
   }
   fillCommentsCount();
 };
@@ -72,12 +72,12 @@ const loadMoreComments = () => {
 const tooglePictureModal = (isHidden) => {
   toggleClass(bigPicElement, 'hidden', !isHidden);
   toggleClass(document.body, 'modal-open', isHidden);
-  bigPicCommentsElement.innerHTML = '';
 };
 
 const closeBigPicModal = () => {
   shownCommentsCount = 0;
   bigPicCommentsLoaderElement.classList.remove('hidden');
+  bigPicCommentsElement.innerHTML = '';
 
   tooglePictureModal(false);
   document.removeEventListener('keydown', onDocumentEscKeydown);
@@ -90,8 +90,8 @@ const openBigPicModal = (element) => {
   totalCommentLists = element.comments;
   totalCommentListLength = totalCommentLists.length;
   renderBigPic(element);
-
   tooglePictureModal(true);
+
   document.addEventListener('keydown', onDocumentEscKeydown);
   bigPicCloseButtonElement.addEventListener('click', onCloseButtonClick);
   bigPicCommentsLoaderElement.addEventListener('click', onCommentsLoaderClick);
