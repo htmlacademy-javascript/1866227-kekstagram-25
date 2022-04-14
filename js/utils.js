@@ -20,11 +20,11 @@ const checkIsEnterKey = (evt) => evt.key === 'Enter';
 
 const toggleClass = (element, className, isHidden) => element.classList.toggle(className, isHidden);
 
-const stopEscPropagation = ((evt) => {
+const stopEscPropagation = (evt) => {
   if(checkIsEscapeKey(evt)){
-    evt.stopPropogation();
+    evt.stopPropagation();
   }
-});
+};
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');

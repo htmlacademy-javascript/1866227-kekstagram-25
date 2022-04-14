@@ -14,7 +14,7 @@ const bigPicCommentsLoaderElement = bigPicElement.querySelector('.social__commen
 const bigPicShowenCommentsCountElement = bigPicElement.querySelector('.social__comment-count');
 
 let shownCommentsCount = 0;
-let totalCommentList = [];
+let totalCommentLists = [];
 let totalCommentListLength = 0;
 
 const fillBigPicComments = (comments) => {
@@ -58,12 +58,12 @@ const renderBigPic = ({url, likes, description, comments}) => {
 };
 
 //Функция запускается по нажатю на кнопку "Загрузить еще" по событию. Собирает все скерытые комментарии и удаляет класс hidden у 5 штук, или остатки (если остаток меньше 5).
-const loadMoreCommentHandler = () => {
-  const bigPicComment = bigPicCommentsElement.querySelectorAll('.social__comment.hidden');
-  const commentsForShowCount = bigPicComment.length < COMMENTS_SHOWEN ? bigPicComment.length : COMMENTS_SHOWEN;
+const loadMoreComments = () => {
+  const bigPicComments = bigPicCommentsElement.querySelectorAll('.social__comment.hidden');
+  const commentsForShowCount = bigPicComments.length < COMMENTS_SHOWEN ? bigPicComments.length : COMMENTS_SHOWEN;
   shownCommentsCount += commentsForShowCount;
   for (let i=0; i < commentsForShowCount; i++) {
-    bigPicComment[i].classList.remove('hidden');
+    bigPicComments[i].classList.remove('hidden');
   }
   fillCommentsCount();
 };
@@ -72,33 +72,49 @@ const loadMoreCommentHandler = () => {
 const tooglePictureModal = (isHidden) => {
   toggleClass(bigPicElement, 'hidden', !isHidden);
   toggleClass(document.body, 'modal-open', isHidden);
-  bigPicCommentsElement.innerHTML = '';
 };
 
+const closeBigPicModal = () => {
+  shownCommentsCount = 0;
+  bigPicCommentsLoaderElement.classList.remove('hidden');
+  bigPicCommentsElement.innerHTML = '';
 
-//Все действия, которые нужно сделать при закрытии модального окна
-const closeBigPicModal = (evt) => {
-  evt.preventDefault();
-  if (checkIsEscapeKey(evt) || checkIsMouseClick(evt)) {
-    tooglePictureModal(false);
-    document.removeEventListener('keydown', closeBigPicModal);
-    bigPicCloseButtonElement.removeEventListener('click', closeBigPicModal);
-    bigPicCommentsLoaderElement.removeEventListener('click', loadMoreCommentHandler);
-    shownCommentsCount = 0;
-    bigPicCommentsLoaderElement.classList.remove('hidden');
-  }
+  tooglePictureModal(false);
+  document.removeEventListener('keydown', onDocumentEscKeydown);
+  bigPicCloseButtonElement.removeEventListener('click', onCloseButtonClick);
+  bigPicCommentsLoaderElement.removeEventListener('click', onCommentsLoaderClick);
 };
 
 //Все действия, которые нужно сделать при открытии модального окна
 const openBigPicModal = (element) => {
-  bigPicCommentsLoaderElement.addEventListener('click', loadMoreCommentHandler);
-  totalCommentList = element.comments;
-  totalCommentListLength = totalCommentList.length;
-  tooglePictureModal(true);
+  totalCommentLists = element.comments;
+  totalCommentListLength = totalCommentLists.length;
   renderBigPic(element);
-  document.addEventListener('keydown', closeBigPicModal);
-  bigPicCloseButtonElement.addEventListener('click', closeBigPicModal);
+  tooglePictureModal(true);
+
+  document.addEventListener('keydown', onDocumentEscKeydown);
+  bigPicCloseButtonElement.addEventListener('click', onCloseButtonClick);
+  bigPicCommentsLoaderElement.addEventListener('click', onCommentsLoaderClick);
 };
+
+function onCommentsLoaderClick (evt) {
+  if(checkIsMouseClick(evt)) {
+    loadMoreComments();
+  }
+}
+
+function onDocumentEscKeydown (evt) {
+  if(checkIsEscapeKey(evt)) {
+    closeBigPicModal();
+  }
+}
+
+function onCloseButtonClick (evt) {
+  evt.preventDefault();
+  if(checkIsMouseClick(evt)) {
+    closeBigPicModal();
+  }
+}
 
 export {openBigPicModal};
 
