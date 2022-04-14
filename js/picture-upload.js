@@ -20,7 +20,7 @@ const scaleControlsElement = document.querySelectorAll('[type=\'button\'].scale_
 const uploadPhoto = (evt) => {
   const file = evt.target.files[0];
   const fileName = file.name;
-  if (PICTURE_TYPES.includes(fileName)) {
+  if (PICTURE_TYPES.some((format) => fileName.endsWith(format))) {
     pictureUploadPreviewElement.src = URL.createObjectURL(file);
   }
 };

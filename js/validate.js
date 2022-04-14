@@ -59,12 +59,30 @@ const validDescrLength = ((value) =>
 //Создаем единую функцию для валидации хещтега
 const validateHash = (value) => {
   const errorMessages = [];
-  if(!validTagOnlyHash(value))  {errorMessages.push('ХешТег не должен состоять только из #.');}
-  if(!validTagFromHash(value))  {errorMessages.push('ХешТег должен состоять из # и хотя бы одного символа.');}
-  if(!validTagsOverflow(value))  {errorMessages.push(`Максимальное кол-во хештегов ${HASHTAGS_MAX_COUNT} штук.`);}
-  if(!validTagsDublicate(value))  {errorMessages.push('Все хештеги должны быть уникальными.');}
-  if(!validTagsLengthMinMax(value))  {errorMessages.push(`Длина хештега должна быть больше ${HASHTAGS_MIN_SYMBOLS} и меньше ${HASHTAGS_MAX_SYMBOLS} символов.`);}
-  if(!validTagsRegExp(value))  {errorMessages.push('Хештег должен состоять только из букв и цифр');}
+  if(!validTagOnlyHash(value)) {
+    errorMessages.push('ХешТег не должен состоять только из #.');
+  }
+
+  if(!validTagFromHash(value)) {
+    errorMessages.push('ХешТег должен состоять из # и хотя бы одного символа.');
+  }
+
+  if(!validTagsOverflow(value)) {
+    errorMessages.push(`Максимальное кол-во хештегов ${HASHTAGS_MAX_COUNT} штук.`);
+  }
+
+  if(!validTagsDublicate(value)) {
+    errorMessages.push('Все хештеги должны быть уникальными.');
+  }
+
+  if(!validTagsLengthMinMax(value)) {
+    errorMessages.push(`Длина хештега должна быть больше ${HASHTAGS_MIN_SYMBOLS} и меньше ${HASHTAGS_MAX_SYMBOLS} символов.`);
+  }
+
+  if(!validTagsRegExp(value)) {
+    errorMessages.push('Хештег должен состоять только из букв и цифр');
+  }
+
   return errorMessages;
 };
 
