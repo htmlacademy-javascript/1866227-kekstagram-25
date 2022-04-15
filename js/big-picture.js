@@ -7,11 +7,11 @@ const bigPicElement = document.querySelector('.big-picture');
 const bigPicCloseButtonElement = bigPicElement.querySelector('.big-picture__cancel');
 const bigPicImgElement = bigPicElement.querySelector('.big-picture__img img');
 const bigPicLikesCountElement = bigPicElement.querySelector('.likes-count');
+const bigPicCommentsCountStartElement = bigPicElement.querySelector('.comments-count-start');
 const bigPicCommentsCountElement = bigPicElement.querySelector('.comments-count');
 const bigPicCaptionElement = bigPicElement.querySelector('.social__caption');
 const bigPicCommentsElement = bigPicElement.querySelector('.social__comments');
 const bigPicCommentsLoaderElement = bigPicElement.querySelector('.social__comments-loader');
-const bigPicShowenCommentsCountElement = bigPicElement.querySelector('.social__comment-count');
 
 let shownCommentsCount = 0;
 let totalCommentLists = [];
@@ -37,7 +37,8 @@ const fillBigPicComments = (comments) => {
 
 //Функция после каждого телодвижения заполняет в HTML даныне по количеству отображаемых комментариев и убирает кнопку если уже показали все комментарии.
 const fillCommentsCount = () => {
-  bigPicShowenCommentsCountElement.innerHTML = `${shownCommentsCount} из <span class="comments-count">${totalCommentListLength}</span> ${totalCommentListLength === 1 ? 'комментария': 'комментариев'}`;
+  bigPicCommentsCountStartElement.textContent = shownCommentsCount;
+  bigPicCommentsCountElement.textContent = totalCommentListLength;
   if(shownCommentsCount === totalCommentListLength) {
     bigPicCommentsLoaderElement.classList.add('hidden');
   }

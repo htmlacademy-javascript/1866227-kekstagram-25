@@ -4,6 +4,8 @@ const effectsElement = document.querySelectorAll('.effects__radio');
 const pictureUploadPreviewElement = document.querySelector('.img-upload__preview img');
 const pictureUploadValueElement = document.querySelector('.effect-level__value');
 
+let effectId;
+
 const EFFECT = {
   'effect-none': {
     name: 'none',
@@ -92,16 +94,15 @@ const EFFECT = {
 };
 
 const onSliderChange = () => {
-  const effectId = document.querySelector('.effects__radio:checked').getAttribute('id');
-  if (effectId !== 'effect-none') {
-    pictureUploadValueElement.value = sliderElement.noUiSlider.get();
-    pictureUploadPreviewElement.style.filter = `${EFFECT[effectId].filter}(${sliderElement.noUiSlider.get()}${EFFECT[effectId].unit})`;
-  }
+  pictureUploadValueElement.value = sliderElement.noUiSlider.get();
+  pictureUploadPreviewElement.style.filter = `${EFFECT[effectId].filter}(${sliderElement.noUiSlider.get()}${EFFECT[effectId].unit})`;
 };
 
 const changeEffect = (evt) => {
-  const effectId = evt.target.getAttribute('id');
-  pictureUploadPreviewElement.classList = '';
+  effectId = evt.target.getAttribute('id');
+  if (pictureUploadPreviewElement.className) {
+    pictureUploadPreviewElement.classList.remove(pictureUploadPreviewElement.className);
+  }
   pictureUploadPreviewElement.classList.add(`effects__preview--${EFFECT[effectId].name}`);
   sliderContainerElement.classList.add('hidden');
   pictureUploadPreviewElement.style.filter = '';
@@ -134,6 +135,7 @@ const createSlider = () => {
     },
   });
 
+  effectId = document.querySelector('.effects__radio:checked').getAttribute('id');
   effectsElement.forEach((element) => element.addEventListener('change', changeEffect));
   sliderElement.noUiSlider.on('update', onSliderChange);
   sliderContainerElement.classList.add('hidden');

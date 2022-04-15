@@ -23,63 +23,63 @@ const splitHashtags = ((HashtagsString) =>
 );
 
 ///Проверка, не состоит ли хэштег только из символа решетки (#).
-const validTagOnlyHash = ((value) =>
+const isValidTagOnlyHash = ((value) =>
   !(splitHashtags(value).some((element) => (element.charAt(0) === '#' && element.length === 1)))
 );
 
 //Проверка, начинается ли хэштег с символа решетки (#).
-const validTagFromHash = ((value) =>
+const isValidTagFromHash = ((value) =>
   splitHashtags(value).every((element) => element.startsWith('#'))
 );
 
 // Проверка на превышение количества хэштегов..
-const validTagsOverflow = ((value) =>
+const isValidTagsOverflow = ((value) =>
   splitHashtags(value).length <= HASHTAGS_MAX_COUNT
 );
 
 // Проверка на наличие повторяющихся хэштегов.
-const validTagsDublicate = ((value) =>
+const isValidTagsDublicate = ((value) =>
   !(splitHashtags(value).some((element, index, arr) => arr.lastIndexOf(element) !== index))
 );
 
 // Проверка на минимальную и максимальную длину хэштега.
-const validTagsLengthMinMax = ((value) =>
+const isValidTagsLengthMinMax = ((value) =>
   splitHashtags(value).every((element) => element.length >= HASHTAGS_MIN_SYMBOLS && element.length <= HASHTAGS_MAX_SYMBOLS)
 );
 
 // Проверка хэштегов на соответствие регулярному выражению.
-const validTagsRegExp = ((value) =>
+const isValidTagsRegExp = ((value) =>
   splitHashtags(value).every((element) => element.match(HASHTAGS_REGEX))
 );
 // Проверка описания на длину текста.
-const validDescrLength = ((value) =>
+const isValidDescrLength = ((value) =>
   value.length <= DESCRIPTION_MAX_LENGTH
 );
 
 //Создаем единую функцию для валидации хещтега
 const validateHash = (value) => {
   const errorMessages = [];
-  if(!validTagOnlyHash(value)) {
+  if(!isValidTagOnlyHash(value)) {
     errorMessages.push('ХешТег не должен состоять только из #.');
   }
 
-  if(!validTagFromHash(value)) {
+  if(!isValidTagFromHash(value)) {
     errorMessages.push('ХешТег должен состоять из # и хотя бы одного символа.');
   }
 
-  if(!validTagsOverflow(value)) {
+  if(!isValidTagsOverflow(value)) {
     errorMessages.push(`Максимальное кол-во хештегов ${HASHTAGS_MAX_COUNT} штук.`);
   }
 
-  if(!validTagsDublicate(value)) {
+  if(!isValidTagsDublicate(value)) {
     errorMessages.push('Все хештеги должны быть уникальными.');
   }
 
-  if(!validTagsLengthMinMax(value)) {
+  if(!isValidTagsLengthMinMax(value)) {
     errorMessages.push(`Длина хештега должна быть больше ${HASHTAGS_MIN_SYMBOLS} и меньше ${HASHTAGS_MAX_SYMBOLS} символов.`);
   }
 
-  if(!validTagsRegExp(value)) {
+  if(!isValidTagsRegExp(value)) {
     errorMessages.push('Хештег должен состоять только из букв и цифр');
   }
 
@@ -98,7 +98,7 @@ const pristine = new Pristine(pictureUploadFormElement, {
 
 //Вешаем слушателей методом addValidator на поле Хеш и Описание.
 pristine.addValidator(pictureUploadHashtagsElement, (value) => (validateHash(value).length===0), (value) => (validateHash(value)[0]));
-pristine.addValidator(pictureUploadDescrElement, validDescrLength, `Длина описания не должна превышать ${DESCRIPTION_MAX_LENGTH} символов`);
+pristine.addValidator(pictureUploadDescrElement, isValidDescrLength, `Длина описания не должна превышать ${DESCRIPTION_MAX_LENGTH} символов`);
 
 //Проверяем что все поля валидны пере отправкой формы.
 
