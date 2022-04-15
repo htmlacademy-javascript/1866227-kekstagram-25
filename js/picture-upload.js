@@ -37,7 +37,9 @@ const closePictureUploadModal = () => {
   pictureUploadFormElement.reset();
   pictureUploadButtonElement.value = '';
   pictureUploadPreviewElement.style = '';
-  pictureUploadPreviewElement.classList = '';
+  if (pictureUploadPreviewElement.className) {
+    pictureUploadPreviewElement.classList.remove(pictureUploadPreviewElement.className);
+  }
   pristine.reset();
   removeSlider();
 

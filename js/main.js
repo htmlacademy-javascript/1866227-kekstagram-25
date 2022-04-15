@@ -8,9 +8,9 @@ import {createFilter} from './filter.js';
 const URL_GET = 'https://25.javascript.pages.academy/kekstagram/data';
 
 createGetLoader(URL_GET,
-  (datas) => {
-    addPictures(datas);
-    createFilter(datas);
+  (data) => {
+    addPictures(data);
+    createFilter(data);
   },
   showAlert
 );

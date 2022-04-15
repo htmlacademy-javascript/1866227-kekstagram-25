@@ -1,6 +1,6 @@
 import {openBigPicModal} from './big-picture.js';
 
-const addPictures = (photosArray) => {
+const addPictures = (photos) => {
 
   //Находим секцию с картинками, секуцию с большими картинками и все равнее добавленные картинки
   const picturesElement = document.querySelector('.pictures');
@@ -13,7 +13,7 @@ const addPictures = (photosArray) => {
   const fragment = document.createDocumentFragment();
 
   //Перебираем массив картинок, для каждого элемента создаем клон темплейта и заполняем его данными
-  photosArray.forEach((element) => {
+  photos.forEach((element) => {
     //Создаем клон темплейта и выбираем елементы, в которые будем записывать данные
     const pictureTemplate = picturesTemplate.cloneNode(true);
     const pictureImgElement = pictureTemplate.querySelector('.picture__img');

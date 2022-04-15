@@ -8,7 +8,7 @@ const getRandomNumber = (a, b) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
 
-const genArrayFromObjects = (maxCount, fn) => Array.from({length: getRandomNumber(1, maxCount)}, fn);
+const getArrayFromObjects = (maxCount, fn) => Array.from({length: getRandomNumber(1, maxCount)}, fn);
 
 const checkIsMouseClick = (evt) => evt.type === 'click';
 
@@ -58,7 +58,7 @@ function debounce (callback, timeoutDelay = 500) {
 export {
   getRandomNumber,
   getRandomArrayElement,
-  genArrayFromObjects,
+  getArrayFromObjects,
   checkIsEscapeKey,
   checkIsEnterKey,
   checkIsMouseClick,
