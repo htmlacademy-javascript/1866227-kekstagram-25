@@ -1,3 +1,4 @@
+const sliderContainerElement = document.querySelector('.img-upload__effect-level');
 const sliderElement = document.querySelector('.effect-level__slider');
 const effectsElement = document.querySelectorAll('.effects__radio');
 const pictureUploadPreviewElement = document.querySelector('.img-upload__preview img');
@@ -102,11 +103,11 @@ const changeEffect = (evt) => {
   const effectId = evt.target.getAttribute('id');
   pictureUploadPreviewElement.classList = '';
   pictureUploadPreviewElement.classList.add(`effects__preview--${EFFECT[effectId].name}`);
-  sliderElement.classList.add('hidden');
+  sliderContainerElement.classList.add('hidden');
   pictureUploadPreviewElement.style.filter = '';
 
   if(effectId !== 'effect-none') {
-    sliderElement.classList.remove('hidden');
+    sliderContainerElement.classList.remove('hidden');
     sliderElement.noUiSlider.updateOptions(EFFECT[effectId].nouisilder);
   }
 };
@@ -135,7 +136,7 @@ const createSlider = () => {
 
   effectsElement.forEach((element) => element.addEventListener('change', changeEffect));
   sliderElement.noUiSlider.on('update', onSliderChange);
-  sliderElement.classList.add('hidden');
+  sliderContainerElement.classList.add('hidden');
 
 };
 

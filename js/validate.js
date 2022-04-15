@@ -103,11 +103,11 @@ pristine.addValidator(pictureUploadDescrElement, validDescrLength, `Длина �
 //Проверяем что все поля валидны пере отправкой формы.
 
 const lockSubmitButton = (element) => {
-  element.disable = true;
+  element.disabled = true;
   element.textContent = 'Загружаю...';
 };
 const unlockSubmitButton = (element) => {
-  element.disable = false;
+  element.disabled = false;
   element.textContent = 'Опубликовать';
 };
 
